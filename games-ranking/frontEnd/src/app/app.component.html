@@ -1,0 +1,27 @@
+<div class="header">
+    <img src="/assets/img/logo.png">
+</div>
+<div class="table" *ngIf="isOK; else loading">
+
+  <app-exibir-jogadores [jogadores]="jogadores"
+                        (delete_event)="delete($event)"
+                        (update_event)="update($event,'atualizar')"
+                        (incVitoria_event)="update($event,'incrementar')"
+  ></app-exibir-jogadores>
+
+
+  <app-modal-jogador [isVisibleModal]="isVisibleModal"
+                     title="Adicionar Jogador"
+                     tipo_modal="S"
+                     (closeModal)="closeModal($event)"
+                     (enviarForm)="save
+                     ($event)"></app-modal-jogador>
+  <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Adicionar Jogador</span></button>
+</div>
+
+<ng-template #loading>
+  <div class="loading">
+    <nz-spin [nzSize]="'large'"></nz-spin>
+    <span>Carregando...</span>
+  </div>
+</ng-template>

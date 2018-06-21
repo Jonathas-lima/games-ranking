@@ -1,0 +1,29 @@
+<div class="salvarForm">
+<form nz-form [formGroup]="salvarForm" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nome">Nome</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input nz-input formControlName="nome" id="nome">
+      <nz-form-explain *ngIf="salvarForm.get('nome').dirty || salvarForm.get('nome').touched">O campo é obrigatório!</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="numVitorias">Vitórias</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input nz-input formControlName="numVitorias" id="numVitorias" placeholder="Digite o número de vitórias">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="numPartidas">Partidas</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input nz-input formControlName="numPartidas" id="numPartidas" placeholder="Digite o número de partidas">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-control [nzSpan]="14" [nzOffset]="6">
+    <button nz-button nzType="primary" [disabled]="!salvarForm.valid">Salvar</button>
+  </nz-form-control>
+</form>
+</div>

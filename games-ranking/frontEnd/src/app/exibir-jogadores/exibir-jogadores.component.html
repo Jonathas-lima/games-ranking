@@ -1,0 +1,44 @@
+  <nz-table  #basicTable nzBordered [nzData]="jogadores" [nzPageSize]="5">
+    <thead style="text-align: center">
+    <tr>
+      <th>Nome</th>
+      <th nzWidth="20%">Vitórias</th>
+      <th nzWidth="20%">Partidas</th>
+      <th nzWidth="20%">Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of basicTable.data; let indx = index">
+      <td>{{data.nome}}</td>
+      <td>
+        <div  class="inline-app">
+          {{data.numeroVitorias}}
+          <a (click)="incrementeVitoria(data)" nz-tooltip="Adicionar vitória" >
+            <i class="anticon anticon-plus"></i>
+          </a>
+        </div>
+      </td>
+      <td>
+        <div  class="inline-app ">
+          {{data.numeroPartidas}}
+          <a (click)="incrementePartida(data)" nz-tooltip="Adicionar partida">
+            <i class="anticon anticon-plus"></i>
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="inline-app">
+        <a (click)="delete(data)"><i class="anticon anticon-user-delete"></i> Deletar</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a (click)="showModal(indx, data)"><i class="anticon anticon-edit"></i> Editar</a>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+  <app-modal-jogador [isVisibleModal]="modal"
+                     [title]="'Editar Jogador'"
+                     [tipo_modal]="'U'"
+                     [jogador]="jogadorActive"
+                     (closeModal)="closeModal($event)"
+                     (enviarForm)="update($event)"></app-modal-jogador>

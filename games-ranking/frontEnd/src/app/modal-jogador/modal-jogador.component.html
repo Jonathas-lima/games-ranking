@@ -1,0 +1,11 @@
+<div>
+
+  <nz-modal [(nzVisible)]="isVisibleModal" [nzTitle]="title" [nzContent]="modalContent" [nzFooter]="modalFoot" (nzOnCancel)="handleCancel()">
+
+  </nz-modal>
+
+  <ng-template #modalContent>
+    <app-salvar-jogador [jogador]="jogador" [tipo_modal]="tipo_modal" (nomeJogador)="save($event)"> </app-salvar-jogador>
+  </ng-template>
+  <ng-template #modalFoot></ng-template>
+</div>
