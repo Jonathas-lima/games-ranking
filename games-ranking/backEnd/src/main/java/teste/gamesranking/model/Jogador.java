@@ -12,6 +12,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author Jonathas
+ *
+ * Classe modelo de Jogador
+ * */
+
 @Entity
 @Table(name = "jogadores")
 @EntityListeners(AuditingEntityListener.class)
@@ -29,16 +35,19 @@ public class Jogador implements Serializable {
 
     private int numeroVitorias;
 
+    //manter a data de criacao
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date createdAt;
 
+    //manter a data da ultima atualizacao
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date updatedAt;
 
+    //para validar os dados vindo do frontEnd
     public void validate(){
 
         if(this.numeroPartidas < 0 ){

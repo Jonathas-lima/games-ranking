@@ -19,8 +19,9 @@ import java.util.List;
 public class JogadorController {
 
     @Autowired
-    JogadorRepository jogadorRepository;
+    JogadorRepository jogadorRepository; //instancia do repositorio de dados
 
+    //retorna todos os jogadores
     @GetMapping("/jogadores")
     public List<Jogador> listarTodosJogadores(){
 
@@ -66,23 +67,22 @@ public class JogadorController {
     public Jogador atualizarJogador(@PathVariable(value = "id") Long jogadorId,
                                     @Valid @RequestBody Jogador jogadorDetalhes){
 
-        System.out.println("DETALHES");
-        System.out.println(jogadorDetalhes.getNome());
-        System.out.println(jogadorDetalhes.getNumeroPartidas());
-        System.out.println(jogadorDetalhes.getNumeroVitorias());
         Jogador jogador = new Jogador();
         try{
+            //busca um jogador pelo id recebido
             jogador = jogadorRepository.findById(jogadorId)
                     .orElseThrow(() -> new ResourceNotFoundException("Jogador", "ID", jogadorId));
 
+            //atualiza os dados
             jogador.setNome(jogadorDetalhes.getNome());
             jogador.setNumeroPartidas(jogadorDetalhes.getNumeroPartidas());
             jogador.setNumeroVitorias(jogadorDetalhes.getNumeroVitorias());
 
             // validacao dos dados recebidos
             jogador.validate();
-            return jogadorRepository.save(jogador);
+            return jogadorRepository.save(jogador);//salva no bd
 
+            //os blocos de catch se comportam igualmente ao POST
         }catch(NameInvalidException e){
             System.out.println("[PUT]: "+e.getMessage());
             jogador.setNome(jogador.getNome().replaceAll("[-!@#$%&*()=+.^:;?{}<>,]"," "));
@@ -110,6 +110,7 @@ public class JogadorController {
     @DeleteMapping("/jogador/{id}")
     public ResponseEntity <?> excluirJogador(@PathVariable(value = "id") Long jogadorId){
 
+        //busca o jogador pelo o id
         Jogador jogador = jogadorRepository.findById(jogadorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Jogador", "ID", jogadorId));
 
