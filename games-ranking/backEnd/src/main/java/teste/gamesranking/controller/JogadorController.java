@@ -9,6 +9,7 @@ import teste.gamesranking.exceptions.NegativeNumberException;
 import teste.gamesranking.exceptions.ResourceNotFoundException;
 import teste.gamesranking.model.Jogador;
 import teste.gamesranking.repository.JogadorRepository;
+import teste.gamesranking.service.JogadorService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -19,13 +20,13 @@ import java.util.List;
 public class JogadorController {
 
     @Autowired
-    JogadorRepository jogadorRepository; //instancia do repositorio de dados
+    private JogadorService jogadorService;
 
     //retorna todos os jogadores
     @GetMapping("/jogadores")
     public List<Jogador> listarTodosJogadores(){
 
-        return jogadorRepository.findAll();
+        return jogadorService.getAllJogadores();
 
     }
 
@@ -34,21 +35,21 @@ public class JogadorController {
 
         try{
             jogador.validate();
-            return jogadorRepository.save(jogador);
+            return jogadorService.saveJogador(jogador);
 
         }catch(NameInvalidException e){
             // troca o caractere especial por um espaco
             System.out.println("[POST]: "+e.getMessage());
             jogador.setNome(jogador.getNome().replaceAll("[-!@#$%&*()=+.^:;?{}<>,]"," "));
 
-            return jogadorRepository.save(jogador);
+            return jogadorService.saveJogador(jogador);
 
         }catch (InconsistentDataException e){
             // se o numero de vitorias > numero partidas, igualar o numero de vitorias ao de partidas
             System.out.println("[POST]: "+e.getMessage());
             jogador.setNumeroVitorias(jogador.getNumeroPartidas());
 
-            return jogadorRepository.save(jogador);
+            return jogadorService.saveJogador(jogador);
 
         }catch (NegativeNumberException e){
             // se receber dados negativos troca por 0
@@ -59,7 +60,7 @@ public class JogadorController {
             }else{
                 jogador.setNumeroVitorias(0);// 0 devido a ser o numero negativo
             }
-            return jogadorRepository.save(jogador);
+            return jogadorService.saveJogador(jogador);
         }
     }
 
@@ -70,8 +71,7 @@ public class JogadorController {
         Jogador jogador = new Jogador();
         try{
             //busca um jogador pelo id recebido
-            jogador = jogadorRepository.findById(jogadorId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Jogador", "ID", jogadorId));
+            jogador = jogadorService.getJogadorById(jogadorId);
 
             //atualiza os dados
             jogador.setNome(jogadorDetalhes.getNome());
@@ -80,20 +80,20 @@ public class JogadorController {
 
             // validacao dos dados recebidos
             jogador.validate();
-            return jogadorRepository.save(jogador);//salva no bd
+            return jogadorService.saveJogador(jogador);//salva no bd
 
             //os blocos de catch se comportam igualmente ao POST
         }catch(NameInvalidException e){
             System.out.println("[PUT]: "+e.getMessage());
             jogador.setNome(jogador.getNome().replaceAll("[-!@#$%&*()=+.^:;?{}<>,]"," "));
 
-            return jogadorRepository.save(jogador);
+            return jogadorService.saveJogador(jogador);
 
         }catch (InconsistentDataException e){
             System.out.println("[PUT]: "+e.getMessage());
             jogador.setNumeroVitorias(jogador.getNumeroPartidas());
 
-            return jogadorRepository.save(jogador);
+            return jogadorService.saveJogador(jogador);
 
         }catch (NegativeNumberException e){
             System.out.println("[PUT]: "+e.getMessage());
@@ -103,7 +103,7 @@ public class JogadorController {
             }else{
                 jogador.setNumeroVitorias(0);// 0 devido a ser o numero negativo
             }
-            return jogadorRepository.save(jogador);
+            return jogadorService.saveJogador(jogador);
         }
     }
 
@@ -111,10 +111,9 @@ public class JogadorController {
     public ResponseEntity <?> excluirJogador(@PathVariable(value = "id") Long jogadorId){
 
         //busca o jogador pelo o id
-        Jogador jogador = jogadorRepository.findById(jogadorId)
-                .orElseThrow(() -> new ResourceNotFoundException("Jogador", "ID", jogadorId));
+        Jogador jogador = jogadorService.getJogadorById(jogadorId);
 
-        jogadorRepository.delete(jogador);
+        jogadorService.deleteJogador(jogador);
         return ResponseEntity.ok().build();
     }
 }

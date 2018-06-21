@@ -8,6 +8,6 @@ import teste.gamesranking.model.Jogador;
  * @author Jonathas
  * Para interface com o Banco de dados
  * */
-@Repository
+@Repository("jogadorRepository")
 public interface JogadorRepository extends JpaRepository<Jogador, Long> {
 }
