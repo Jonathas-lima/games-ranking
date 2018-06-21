@@ -54,7 +54,11 @@ export class AppComponent implements OnInit{
       if(msg === 'atualizar'){
         this.message.create('success', `${jogador.nome} atualizado com sucesso!`);
       }else{
-        this.message.create('success', `Vitória adicionada!`);
+        if(jogador.numeroVitorias > jogador.numeroPartidas){
+          this.message.create('error', `Vitórias não pode ser maior que partidas!`);
+        }else{
+          this.message.create('success', `Vitória adicionada!`);
+        }
       }
     });
   }
